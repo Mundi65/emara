@@ -22,6 +22,7 @@ export default function FichaJoya() {
   const [j, setJ] = useState<Joya | null>(null)
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [foto, setFoto] = useState<File | null>(null)
+  const [fotoCat, setFotoCat] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [ok, setOk] = useState(false)
   const [guardando, setGuardando] = useState(false)
@@ -45,6 +46,8 @@ export default function FichaJoya() {
     try {
       let ruta = j.foto_joya_path
       if (foto) ruta = await subirFoto(`${j.lote_id}/${j.id}_joya_${Date.now()}.jpg`, foto)
+      let rutaCat = j.foto_catalogo_path
+      if (fotoCat) rutaCat = await subirFoto(`${j.lote_id}/${j.id}_catalogo_${Date.now()}.jpg`, fotoCat)
       const datos: Partial<Joya> = {
         codigo_ticket: j.codigo_ticket?.trim() || null,
         categoria_id: j.categoria_id,
@@ -56,12 +59,14 @@ export default function FichaJoya() {
         casilla: j.casilla?.trim() || null,
         notas: j.notas?.trim() || null,
         foto_joya_path: ruta,
+        foto_catalogo_path: rutaCat,
       }
       if (modoDuena) Object.assign(datos, { precio_costo: j.precio_costo, peso_gramos: j.peso_gramos })
       const { error } = await supabase.from('joyas').update(datos).eq('id', j.id)
       if (error) throw error
       setFoto(null)
-      setJ({ ...j, foto_joya_path: ruta })
+      setFotoCat(null)
+      setJ({ ...j, foto_joya_path: ruta, foto_catalogo_path: rutaCat })
       setOk(true)
     } catch (e) {
       setError(mensajeError(e))
@@ -91,9 +96,24 @@ export default function FichaJoya() {
       </Link>
 
       <label className="flex min-h-14 items-center justify-center rounded-2xl border-2 border-emara bg-white text-lg font-semibold text-emara">
-        📷 {foto ? 'Foto nueva lista' : 'Cambiar foto'}
+        📷 {foto ? 'Foto nueva lista (toca Guardar)' : 'Cambiar foto con ticket'}
         <input type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => setFoto(e.target.files?.[0] ?? null)} />
       </label>
+
+      <Tarjeta className="flex flex-col gap-3">
+        <p className="text-lg font-bold">✨ Foto para clientas (sin ticket)</p>
+        {j.foto_catalogo_path ? (
+          <div className="mx-auto w-40">
+            <FotoJoya ruta={j.foto_catalogo_path} />
+          </div>
+        ) : (
+          <p className="text-base text-amber-800">Falta: esta joya no sale en el catálogo hasta que tenga su foto sin ticket.</p>
+        )}
+        <label className="flex min-h-14 items-center justify-center rounded-2xl bg-emara text-lg font-semibold text-white">
+          {fotoCat ? '✓ Foto lista (toca Guardar)' : j.foto_catalogo_path ? 'Cambiar foto para clientas' : 'Tomar foto para clientas'}
+          <input type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => setFotoCat(e.target.files?.[0] ?? null)} />
+        </label>
+      </Tarjeta>
 
       <Campo etiqueta="Código del ticket" value={j.codigo_ticket ?? ''} onChange={(e) => cambiar({ codigo_ticket: e.target.value })} />
       <Opciones

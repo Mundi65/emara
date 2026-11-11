@@ -73,6 +73,8 @@ function RecibirEnLote({ loteId }: { loteId: string }) {
   // formulario
   const [foto, setFoto] = useState<File | null>(null)
   const [vistaPrevia, setVistaPrevia] = useState<string | null>(null)
+  const [fotoCat, setFotoCat] = useState<File | null>(null)
+  const [vistaCat, setVistaCat] = useState<string | null>(null)
   const [codigo, setCodigo] = useState('')
   const [tipoCosto, setTipoCosto] = useState<'precio' | 'peso'>('precio')
   const [costo, setCosto] = useState<number | null>(null)
@@ -91,6 +93,7 @@ function RecibirEnLote({ loteId }: { loteId: string }) {
   const [confirmarRepetido, setConfirmarRepetido] = useState(false)
   const [guardada, setGuardada] = useState<{ casilla: string; codigo: string } | null>(null)
   const inputFoto = useRef<HTMLInputElement>(null)
+  const inputCat = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     supabase
@@ -143,8 +146,15 @@ function RecibirEnLote({ loteId }: { loteId: string }) {
     setVistaPrevia(archivo ? URL.createObjectURL(archivo) : null)
   }
 
+  function elegirFotoCat(archivo: File | null) {
+    setFotoCat(archivo)
+    if (vistaCat) URL.revokeObjectURL(vistaCat)
+    setVistaCat(archivo ? URL.createObjectURL(archivo) : null)
+  }
+
   function limpiar() {
     elegirFoto(null)
+    elegirFotoCat(null)
     setCodigo('')
     setTipoCosto('precio')
     setCosto(null)
@@ -185,6 +195,8 @@ function RecibirEnLote({ loteId }: { loteId: string }) {
       const id = crypto.randomUUID()
       let ruta: string | null = null
       if (foto) ruta = await subirFoto(`${loteId}/${id}_joya.jpg`, foto)
+      let rutaCat: string | null = null
+      if (fotoCat) rutaCat = await subirFoto(`${loteId}/${id}_catalogo.jpg`, fotoCat)
       const g = Number(gramos.replace(',', '.'))
       const { data, error } = await supabase
         .from('joyas')
@@ -202,6 +214,7 @@ function RecibirEnLote({ loteId }: { loteId: string }) {
           ticket_manuscrito: manuscrito,
           precio_venta_sugerido: precioVenta,
           foto_joya_path: ruta,
+          foto_catalogo_path: rutaCat,
         })
         .select('casilla')
         .single()
@@ -261,6 +274,28 @@ function RecibirEnLote({ loteId }: { loteId: string }) {
         </BotonGrande>
       )}
       <p className="text-base text-emara/70">Una joya por foto, fondo claro, el ticket de frente y bien visible.</p>
+
+      <input
+        ref={inputCat}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        className="hidden"
+        onChange={(e) => elegirFotoCat(e.target.files?.[0] ?? null)}
+      />
+      {vistaCat ? (
+        <button type="button" onClick={() => inputCat.current?.click()} className="overflow-hidden rounded-2xl">
+          <img src={vistaCat} alt="Foto para clientas" className="max-h-60 w-full object-contain bg-white" />
+          <span className="block py-2 text-base text-emara/70">Foto para clientas · toca para tomarla de nuevo</span>
+        </button>
+      ) : (
+        <BotonGrande variante="secundario" icono="✨" onClick={() => inputCat.current?.click()}>
+          Foto para clientas (joya sola, sin ticket)
+        </BotonGrande>
+      )}
+      <p className="text-base text-emara/70">
+        Es la única foto que sale en el catálogo. Si no la tomas ahora, puedes tomarla después en la ficha de la joya.
+      </p>
 
       <Campo
         etiqueta="Código del ticket"
