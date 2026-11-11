@@ -54,8 +54,8 @@ function Formulario() {
   const navegar = useNavigate()
   const [r, setR] = useState<Resumen | null>(null)
   const [existentes, setExistentes] = useState<Cheque[]>([])
-  const [cantidad, setCantidad] = useState('1')
-  const [primera, setPrimera] = useState(sumarMeses(hoyISO(), 6))
+  const [cantidad, setCantidad] = useState('12')
+  const [primera, setPrimera] = useState(sumarMeses(hoyISO(), 1))
   const [cadaMeses, setCadaMeses] = useState('1')
   const [banco, setBanco] = useState('')
   const [filas, setFilas] = useState<FilaCheque[]>([])
@@ -73,7 +73,6 @@ function Formulario() {
       .then(({ data }) => {
         const res = data as Resumen
         setR(res)
-        if (res && !res.es_propio) setFilas(repartir(Number(res.valor_a_pagar), 1, sumarMeses(hoyISO(), 6), 1, ''))
       })
     supabase
       .from('v_cheques')
@@ -81,6 +80,21 @@ function Formulario() {
       .eq('estado', 'por_cobrar')
       .then(({ data }) => setExistentes((data as Cheque[]) ?? []))
   }, [id])
+
+  // Se reparte solo cada vez que cambia la cantidad, la fecha, cada cuántos meses o el banco.
+  // Después se puede corregir cada cheque a mano.
+  useEffect(() => {
+    if (!r || r.es_propio || r.estado === 'cerrado') return
+    setFilas(
+      repartir(
+        Number(r.valor_a_pagar),
+        Math.min(60, Math.max(0, Number(cantidad) || 0)),
+        primera,
+        Math.max(0, Number(cadaMeses) || 0),
+        banco,
+      ),
+    )
+  }, [r, cantidad, primera, cadaMeses, banco])
 
   const sumaCheques = useMemo(() => filas.reduce((s, f) => s + (f.monto ?? 0), 0), [filas])
 
@@ -90,9 +104,6 @@ function Formulario() {
   const valor = Number(r.valor_a_pagar)
   const diferencia = Math.round((sumaCheques - valor) * 100) / 100
 
-  function generar() {
-    setFilas(repartir(valor, Math.max(0, Number(cantidad) || 0), primera, Math.max(0, Number(cadaMeses) || 0), banco))
-  }
 
   function cambiarFila(i: number, cambio: Partial<FilaCheque>) {
     setFilas((fs) => fs.map((f, j) => (j === i ? { ...f, ...cambio } : f)))
@@ -156,9 +167,9 @@ function Formulario() {
             <Campo etiqueta="Fecha del primero" type="date" value={primera} onChange={(e) => setPrimera(e.target.value)} />
             <Campo etiqueta="Uno cada cuántos meses" inputMode="numeric" value={cadaMeses} onChange={(e) => setCadaMeses(e.target.value)} />
             <Campo etiqueta="Banco (opcional)" value={banco} onChange={(e) => setBanco(e.target.value)} />
-            <BotonGrande variante="secundario" onClick={generar} className="justify-center">
-              Repartir {formatoDinero(valor)} en cheques
-            </BotonGrande>
+            <p className="text-base text-emara/70">
+              Se reparten solos {formatoDinero(valor)} en los cheques de abajo. Puedes corregir cada uno.
+            </p>
           </Tarjeta>
 
           {filas.map((f, i) => {
