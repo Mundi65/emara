@@ -12,6 +12,7 @@ type FilaBalance = {
   plazo_meses: number
   joya_id: string
   codigo_ticket: string | null
+  codigo: string
   foto_joya_path: string | null
   lote: string
   proveedora_id: string
@@ -141,7 +142,7 @@ function Contenido() {
               className="flex gap-3 text-left"
             >
               <div className="w-20 shrink-0">
-                <FotoJoya ruta={f.foto_joya_path} codigo={f.codigo_ticket} />
+                <FotoJoya ruta={f.foto_joya_path} codigo={f.codigo} />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-lg font-semibold">{f.clienta}</p>

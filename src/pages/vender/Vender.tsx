@@ -86,7 +86,7 @@ export default function Vender() {
     return (joyas ?? []).filter(
       (j) =>
         (filtroCat === 'todas' || j.categoria_id === filtroCat) &&
-        (!b || (j.codigo_ticket ?? '').toLowerCase().includes(b)),
+        (!b || j.codigo.toLowerCase().includes(b) || (j.codigo_ticket ?? '').toLowerCase().includes(b)),
     )
   }, [joyas, filtroCat, buscar])
 
@@ -217,7 +217,7 @@ export default function Vender() {
         {joyasElegidas.map((j) => (
           <Tarjeta key={j.id} className="flex items-center gap-3">
             <div className="w-24 shrink-0">
-              <FotoJoya ruta={j.foto_catalogo_path ?? j.foto_joya_path} codigo={j.codigo_ticket} />
+              <FotoJoya ruta={j.foto_catalogo_path ?? j.foto_joya_path} codigo={j.codigo} />
             </div>
             <div className="flex-1">
               <CampoDinero
@@ -289,7 +289,7 @@ export default function Vender() {
                 onClick={() => alternar(j)}
                 className={`rounded-2xl bg-white p-2 text-left shadow-sm ${sel ? 'ring-4 ring-emara' : ''}`}
               >
-                <FotoJoya ruta={j.foto_catalogo_path ?? j.foto_joya_path} codigo={j.codigo_ticket} />
+                <FotoJoya ruta={j.foto_catalogo_path ?? j.foto_joya_path} codigo={j.codigo} />
                 <p className="mt-1 text-center text-lg font-semibold">
                   {j.precio_venta_sugerido ? <Dinero valor={j.precio_venta_sugerido} /> : '—'}
                 </p>

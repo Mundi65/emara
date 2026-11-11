@@ -91,7 +91,7 @@ function RecibirEnLote({ loteId }: { loteId: string }) {
   const [error, setError] = useState<string | null>(null)
   const [confirmarBajo, setConfirmarBajo] = useState(false)
   const [confirmarRepetido, setConfirmarRepetido] = useState(false)
-  const [guardada, setGuardada] = useState<{ casilla: string; codigo: string } | null>(null)
+  const [guardada, setGuardada] = useState<{ casilla: string; codigo: string; codigoApp: string } | null>(null)
   const inputFoto = useRef<HTMLInputElement>(null)
   const inputCat = useRef<HTMLInputElement>(null)
 
@@ -216,11 +216,11 @@ function RecibirEnLote({ loteId }: { loteId: string }) {
           foto_joya_path: ruta,
           foto_catalogo_path: rutaCat,
         })
-        .select('casilla')
+        .select('casilla, codigo')
         .single()
       if (error) throw error
       setContador((n) => n + 1)
-      setGuardada({ casilla: data.casilla, codigo: codigo.trim() })
+      setGuardada({ casilla: data.casilla, codigo: codigo.trim(), codigoApp: data.codigo })
     } catch (e) {
       setError(mensajeError(e))
     }
@@ -236,6 +236,7 @@ function RecibirEnLote({ loteId }: { loteId: string }) {
           <p className="text-xl">Guarda este ticket{guardada.codigo ? ` (${guardada.codigo})` : ''} en la</p>
           <p className="mt-2 text-2xl font-semibold text-emara">CASILLA</p>
           <p className="text-7xl font-black tracking-wider text-emara">{guardada.casilla}</p>
+          <p className="mt-4 text-lg text-emara/70">Código de la joya en Emara: <strong>{guardada.codigoApp}</strong></p>
         </Tarjeta>
         <p className="text-center text-xl">Llevas {contador} joyas en este lote</p>
         <BotonGrande icono="📸" onClick={limpiar} className="min-h-20 text-2xl">
@@ -298,14 +299,14 @@ function RecibirEnLote({ loteId }: { loteId: string }) {
       </p>
 
       <Campo
-        etiqueta="Código del ticket"
+        etiqueta="Código del ticket (si tiene)"
+        ayuda="Si el ticket no trae código, déjalo vacío: la app le pone uno propio."
         value={codigo}
         autoCapitalize="characters"
         onChange={(e) => {
           setCodigo(e.target.value)
           setConfirmarRepetido(false)
         }}
-        amarillo={!codigo}
       />
 
       <Opciones

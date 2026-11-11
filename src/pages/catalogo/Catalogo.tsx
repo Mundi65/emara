@@ -7,92 +7,128 @@ import type { Categoria } from '../../lib/tipos'
 
 type JoyaCatalogo = {
   id: string
+  codigo: string
   categoria_id: string | null
-  codigo_ticket: string | null
+  foto_joya_path: string | null
   foto_catalogo_path: string | null
   precio_venta_sugerido: number | null
+  lotes: { proveedoras: { nombre: string; es_propio: boolean } | null } | null
 }
 
+type Vista = 'existencias' | 'clientas'
+
 /**
- * Catálogo para mostrar a las clientas: foto SIN ticket y precio de venta.
- * Nunca usa la foto con ticket ni el precio de costo (CLAUDE.md regla 1).
+ * Catálogo de todas las joyas disponibles (de todas las proveedoras y "Mis joyas").
+ * - "Mis existencias": para Aida. Usa la foto sin ticket si existe; si no, la de recibir.
+ * - "Para clientas": solo joyas con foto SIN ticket (la otra muestra el costo, CLAUDE.md regla 1).
  */
 export default function Catalogo() {
   const [joyas, setJoyas] = useState<JoyaCatalogo[] | null>(null)
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [filtro, setFiltro] = useState('todas')
-  const [verFaltan, setVerFaltan] = useState(false)
+  const [vista, setVista] = useState<Vista>('existencias')
 
   useEffect(() => {
     supabase
       .from('joyas')
-      .select('id, categoria_id, codigo_ticket, foto_catalogo_path, precio_venta_sugerido')
+      .select('id, codigo, categoria_id, foto_joya_path, foto_catalogo_path, precio_venta_sugerido, lotes(proveedoras(nombre, es_propio))')
       .eq('estado', 'disponible')
       .order('created_at', { ascending: false })
-      .then(({ data }) => setJoyas((data as JoyaCatalogo[]) ?? []))
+      .then(({ data }) => setJoyas((data as unknown as JoyaCatalogo[]) ?? []))
     supabase.from('categorias').select('*').order('orden').then(({ data }) => setCategorias((data as Categoria[]) ?? []))
   }, [])
 
-  const conFoto = useMemo(
-    () => (joyas ?? []).filter((j) => j.foto_catalogo_path && (filtro === 'todas' || j.categoria_id === filtro)),
+  const deCategoria = useMemo(
+    () => (joyas ?? []).filter((j) => filtro === 'todas' || j.categoria_id === filtro),
     [joyas, filtro],
   )
-  const faltan = (joyas ?? []).filter((j) => !j.foto_catalogo_path)
-
-  if (verFaltan) {
-    return (
-      <Pantalla titulo="Faltan fotos para clientas" volver="/catalogo">
-        <p className="text-lg text-emara/80">
-          Toca una joya y toma su foto sin ticket. Cuando la tenga, aparece sola en el catálogo.
-        </p>
-        <button type="button" onClick={() => setVerFaltan(false)} className="self-start text-lg font-semibold text-emara underline">
-          ← Volver al catálogo
-        </button>
-        {faltan.map((j) => (
-          <Link
-            key={j.id}
-            to={`/joyas/${j.id}`}
-            className="flex min-h-16 items-center justify-between rounded-2xl bg-white p-4 text-lg shadow-sm"
-          >
-            <span>{j.codigo_ticket ?? 'Sin código'}</span>
-            <span className="font-semibold text-emara">Tomar foto ›</span>
-          </Link>
-        ))}
-      </Pantalla>
-    )
-  }
+  const lista = vista === 'clientas' ? deCategoria.filter((j) => j.foto_catalogo_path) : deCategoria
+  const sinFotoClientas = deCategoria.filter((j) => !j.foto_catalogo_path).length
 
   return (
     <Pantalla titulo="🖼️ Catálogo" volver="/">
+      <div className="grid grid-cols-2 gap-2 rounded-2xl bg-white p-1 shadow-sm">
+        {(
+          [
+            { v: 'existencias', t: '📦 Mis existencias' },
+            { v: 'clientas', t: '✨ Para clientas' },
+          ] as const
+        ).map((o) => (
+          <button
+            key={o.v}
+            type="button"
+            onClick={() => setVista(o.v)}
+            className={`min-h-14 rounded-xl text-lg font-semibold ${vista === o.v ? 'bg-emara text-white' : 'text-emara'}`}
+          >
+            {o.t}
+          </button>
+        ))}
+      </div>
+
       <Opciones
         opciones={[{ valor: 'todas', texto: 'Todas' }, ...categorias.map((c) => ({ valor: c.id, texto: c.nombre }))]}
         valor={filtro}
         onCambio={setFiltro}
       />
+
+      {joyas && (
+        <p className="text-lg text-emara/80">
+          {lista.length} {lista.length === 1 ? 'joya' : 'joyas'}
+          {vista === 'existencias' ? ' disponibles' : ' para mostrar'}
+        </p>
+      )}
+
       {!joyas ? (
         <Cargando />
-      ) : conFoto.length === 0 ? (
-        <Vacio>Aún no hay joyas con foto para clientas aquí.</Vacio>
+      ) : lista.length === 0 ? (
+        <Vacio>
+          {vista === 'clientas' && sinFotoClientas > 0
+            ? 'Ninguna tiene todavía su foto sin ticket.'
+            : 'No hay joyas disponibles aquí.'}
+        </Vacio>
       ) : (
         <div className="grid grid-cols-2 gap-3">
-          {conFoto.map((j) => (
-            <div key={j.id} className="rounded-2xl bg-white p-2 shadow-sm">
-              <FotoJoya ruta={j.foto_catalogo_path} />
-              <p className="mt-1 text-center text-xl font-bold text-emara">
-                {j.precio_venta_sugerido ? <Dinero valor={j.precio_venta_sugerido} /> : 'Consultar'}
-              </p>
-            </div>
-          ))}
+          {lista.map((j) =>
+            vista === 'clientas' ? (
+              <div key={j.id} className="rounded-2xl bg-white p-2 shadow-sm">
+                <FotoJoya ruta={j.foto_catalogo_path} />
+                <p className="mt-1 text-center text-xl font-bold text-emara">
+                  {j.precio_venta_sugerido ? <Dinero valor={j.precio_venta_sugerido} /> : 'Consultar'}
+                </p>
+              </div>
+            ) : (
+              <Link key={j.id} to={`/joyas/${j.id}`} className="rounded-2xl bg-white p-2 shadow-sm">
+                <FotoJoya ruta={j.foto_catalogo_path ?? j.foto_joya_path} codigo={j.codigo} />
+                <p className="text-center text-xl font-bold text-emara">
+                  {j.precio_venta_sugerido ? <Dinero valor={j.precio_venta_sugerido} /> : '—'}
+                </p>
+                <p className="truncate text-center text-sm text-emara/60">
+                  {j.lotes?.proveedoras?.es_propio ? 'Mis joyas' : j.lotes?.proveedoras?.nombre}
+                </p>
+                {!j.foto_catalogo_path && (
+                  <p className="text-center text-sm font-semibold text-amber-700">Falta foto para clientas</p>
+                )}
+              </Link>
+            ),
+          )}
         </div>
       )}
-      {faltan.length > 0 && (
+
+      {vista === 'clientas' && sinFotoClientas > 0 && (
         <button
           type="button"
-          onClick={() => setVerFaltan(true)}
+          onClick={() => setVista('existencias')}
           className="min-h-14 rounded-2xl bg-amber-50 px-4 text-lg font-semibold text-amber-900"
         >
-          {faltan.length} {faltan.length === 1 ? 'joya no sale' : 'joyas no salen'} porque les falta la foto sin ticket ›
+          {sinFotoClientas} {sinFotoClientas === 1 ? 'joya no sale' : 'joyas no salen'} aquí porque les falta la foto sin
+          ticket. Toca para verlas ›
         </button>
+      )}
+      {vista === 'existencias' && (
+        <p className="text-base text-emara/70">
+          Toca una joya para ver su ficha y tomarle la foto para clientas. Antes de enseñarle el catálogo a una clienta,
+          cambia a "✨ Para clientas".
+        </p>
       )}
     </Pantalla>
   )
