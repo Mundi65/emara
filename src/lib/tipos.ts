@@ -41,6 +41,7 @@ export type Joya = {
   casilla: string | null
   foto_joya_path: string | null
   foto_ticket_path: string | null
+  foto_catalogo_path: string | null
   estado: 'disponible' | 'vendida' | 'devuelta' | 'perdida'
   notas: string | null
   created_at: string
