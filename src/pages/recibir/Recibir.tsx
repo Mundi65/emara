@@ -214,7 +214,7 @@ function RecibirEnLote({ loteId }: { loteId: string }) {
     setGuardando(false)
   }
 
-  if (!lote) return <Pantalla titulo="📦 Recibir joyas"><Cargando /></Pantalla>
+  if (!lote) return <Pantalla titulo="📦 Recibir joyas" volver="/recibir"><Cargando /></Pantalla>
 
   if (guardada) {
     return (

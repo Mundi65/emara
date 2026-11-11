@@ -31,7 +31,7 @@ export default function FichaJoya() {
     supabase.from('categorias').select('*').order('orden').then(({ data }) => setCategorias((data as Categoria[]) ?? []))
   }, [id])
 
-  if (!j) return <Pantalla titulo="Joya"><Cargando /></Pantalla>
+  if (!j) return <Pantalla titulo="Joya" volver="/"><Cargando /></Pantalla>
 
   const cambiar = (c: Partial<Joya>) => {
     setOk(false)
@@ -78,7 +78,7 @@ export default function FichaJoya() {
   }
 
   return (
-    <Pantalla titulo="Joya">
+    <Pantalla titulo="Joya" volver={`/lotes/${j.lote_id}`}>
       <div className="mx-auto w-full max-w-xs">
         <FotoJoya ruta={j.foto_joya_path} codigo={j.codigo_ticket} tamano="lg" />
       </div>

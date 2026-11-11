@@ -40,7 +40,7 @@ export default function EditarClienta() {
       })
   }, [id, nueva])
 
-  if (!c) return <Pantalla titulo="Clienta"><Cargando /></Pantalla>
+  if (!c) return <Pantalla titulo="Clienta" volver="/clientas"><Cargando /></Pantalla>
 
   const opcionDia = c.dia_pago === null ? 0 : [5, 15, 30].includes(c.dia_pago) ? c.dia_pago : -1
 
@@ -73,7 +73,7 @@ export default function EditarClienta() {
   }
 
   return (
-    <Pantalla titulo={nueva ? 'Nueva clienta' : `Editar ${c.nombre}`}>
+    <Pantalla titulo={nueva ? 'Nueva clienta' : `Editar ${c.nombre}`} volver={nueva ? '/clientas' : `/clientas/${c.id}`}>
       {error && <Aviso tipo="error">{error}</Aviso>}
       <Campo etiqueta="Nombre" value={c.nombre} autoFocus={nueva} onChange={(e) => setC({ ...c, nombre: e.target.value })} />
       <Campo

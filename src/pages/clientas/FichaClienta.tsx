@@ -27,7 +27,7 @@ export default function FichaClienta() {
     supabase.from('ajustes').select('nombre_negocio').single().then(({ data }) => setNegocio(data?.nombre_negocio ?? ''))
   }, [id])
 
-  if (!c || !movs) return <Pantalla titulo="Clienta"><Cargando /></Pantalla>
+  if (!c || !movs) return <Pantalla titulo="Clienta" volver="/clientas"><Cargando /></Pantalla>
 
   const saldo = movs.length ? Number(movs[movs.length - 1].saldo_acumulado) : 0
 

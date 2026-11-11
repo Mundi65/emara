@@ -89,7 +89,7 @@ export default function Cobrar() {
     await supabase.from('abonos').update({ enviado_clienta: true }).eq('id', hecho.abonoId)
   }
 
-  if (!c || saldo === null) return <Pantalla titulo="💵 Cobrar abono"><Cargando /></Pantalla>
+  if (!c || saldo === null) return <Pantalla titulo="💵 Cobrar abono" volver="/cobrar"><Cargando /></Pantalla>
 
   if (hecho) {
     return (
@@ -122,7 +122,7 @@ export default function Cobrar() {
   }
 
   return (
-    <Pantalla titulo={`💵 Abono de ${c.nombre}`}>
+    <Pantalla titulo={`💵 Abono de ${c.nombre}`} volver="/cobrar">
       <Tarjeta className="text-center">
         <p className="text-lg text-emara/80">Te debe</p>
         <p className="text-4xl font-black text-emara"><Dinero valor={saldo} /></p>

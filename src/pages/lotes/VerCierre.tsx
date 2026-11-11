@@ -28,7 +28,7 @@ type Cierre = {
  */
 export default function VerCierre() {
   return (
-    <Pantalla titulo="🧾 Cierre del lote">
+    <Pantalla titulo="🧾 Cierre del lote" volver={`/lotes/${useParams().id}`}>
       <SoloDuena>
         <Contenido />
       </SoloDuena>

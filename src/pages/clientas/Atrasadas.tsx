@@ -47,7 +47,7 @@ export default function Atrasadas() {
   }
 
   return (
-    <Pantalla titulo="⏰ Clientas atrasadas">
+    <Pantalla titulo="⏰ Clientas atrasadas" volver="/informes">
       <p className="text-base text-emara/70">
         Aparecen las clientas que ya pasaron su día de pago y no han abonado su cuota del mes. Solo cuentan las que tienen
         día de pago configurado.

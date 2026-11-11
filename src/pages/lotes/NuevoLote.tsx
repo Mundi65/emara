@@ -63,7 +63,7 @@ export default function NuevoLote() {
   }
 
   return (
-    <Pantalla titulo="📦 Nuevo lote">
+    <Pantalla titulo="📦 Nuevo lote" volver="/recibir">
       <SoloDuena>
         {error && <Aviso tipo="error">{error}</Aviso>}
         <Opciones

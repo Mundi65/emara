@@ -46,7 +46,7 @@ export default function Proveedoras() {
   }, [])
 
   return (
-    <Pantalla titulo="🏷️ Proveedoras">
+    <Pantalla titulo="🏷️ Proveedoras" volver="/informes">
       <SoloDuena>
         {!filas ? (
           <Cargando />
