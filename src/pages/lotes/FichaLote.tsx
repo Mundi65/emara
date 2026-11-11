@@ -146,7 +146,7 @@ export default function FichaLote() {
               {lista.map((j) => (
                 <div key={j.id} className="rounded-2xl bg-white p-2 shadow-sm">
                   <Link to={`/joyas/${j.id}`}>
-                    <FotoJoya ruta={j.foto_joya_path} codigo={j.codigo_ticket} />
+                    <FotoJoya ruta={j.foto_joya_path} codigo={j.codigo} />
                   </Link>
                   <p className="mt-1 text-center text-2xl font-bold text-emara">{j.casilla}</p>
                   {j.estado === 'disponible' && abierto ? (

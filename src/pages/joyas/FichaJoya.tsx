@@ -85,7 +85,7 @@ export default function FichaJoya() {
   return (
     <Pantalla titulo="Joya" volver={`/lotes/${j.lote_id}`}>
       <div className="mx-auto w-full max-w-xs">
-        <FotoJoya ruta={j.foto_joya_path} codigo={j.codigo_ticket} tamano="lg" />
+        <FotoJoya ruta={j.foto_joya_path} codigo={j.codigo} tamano="lg" />
       </div>
       <p className="text-center text-xl">
         {ESTADOS[j.estado]}
@@ -115,7 +115,7 @@ export default function FichaJoya() {
         </label>
       </Tarjeta>
 
-      <Campo etiqueta="Código del ticket" value={j.codigo_ticket ?? ''} onChange={(e) => cambiar({ codigo_ticket: e.target.value })} />
+      <Campo etiqueta="Código del ticket (si tiene)" value={j.codigo_ticket ?? ''} onChange={(e) => cambiar({ codigo_ticket: e.target.value })} />
       <Opciones
         etiqueta="Tipo"
         opciones={categorias.map((c) => ({ valor: c.id, texto: c.nombre }))}

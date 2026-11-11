@@ -30,6 +30,7 @@ export type Joya = {
   lote_id: string
   categoria_id: string | null
   genero: 'mujer' | 'hombre' | 'unisex' | 'nino' | null
+  codigo: string
   codigo_ticket: string | null
   tipo_costo: 'precio' | 'peso'
   precio_costo: number | null

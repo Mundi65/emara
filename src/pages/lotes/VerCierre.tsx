@@ -94,7 +94,7 @@ function Contenido() {
       `Fecha: ${formatoFecha(cierre.fecha)}`,
       '',
       `Joyas vendidas: ${cierre.joyas_vendidas}`,
-      ...vendidas.map((j) => `• ${j.codigo_ticket ?? 'sin código'} — ${formatoDinero(j.precio_costo)}`),
+      ...vendidas.map((j) => `• ${j.codigo_ticket ?? j.codigo} — ${formatoDinero(j.precio_costo)}`),
       '',
       `Suma de tickets: ${formatoDinero(cierre.total_ticket)}`,
       `Comisión ${Number(cierre.comision_pct)}%: −${formatoDinero(cierre.comision_valor)}`,
@@ -146,7 +146,7 @@ function Contenido() {
       <h2 className="mt-2 text-xl font-bold">Joyas vendidas de este lote</h2>
       <div className="grid grid-cols-3 gap-2">
         {vendidas.map((j) => (
-          <FotoJoya key={j.id} ruta={j.foto_joya_path} codigo={j.codigo_ticket} />
+          <FotoJoya key={j.id} ruta={j.foto_joya_path} codigo={j.codigo} />
         ))}
       </div>
 
