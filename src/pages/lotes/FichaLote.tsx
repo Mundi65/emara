@@ -76,7 +76,7 @@ export default function FichaLote() {
   const abierto = r?.estado !== 'cerrado'
 
   return (
-    <Pantalla titulo={r ? r.nombre : 'Lote'}>
+    <Pantalla titulo={r ? r.nombre : 'Lote'} volver="/informes">
       {!r || !joyas ? (
         <Cargando />
       ) : (

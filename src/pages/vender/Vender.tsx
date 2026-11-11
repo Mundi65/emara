@@ -179,7 +179,7 @@ export default function Vender() {
 
   if (paso === 'clienta') {
     return (
-      <Pantalla titulo="¿Para quién es?">
+      <Pantalla titulo="¿Para quién es?" volver="/">
         <BotonGrande variante="secundario" onClick={() => setPaso('joyas')}>← Cambiar joyas</BotonGrande>
         {clientas.map((c) => (
           <button
@@ -210,7 +210,7 @@ export default function Vender() {
 
   if (paso === 'precio') {
     return (
-      <Pantalla titulo={`Venta a ${clienta?.nombre ?? '…'}`}>
+      <Pantalla titulo={`Venta a ${clienta?.nombre ?? '…'}`} volver="/">
         <button type="button" onClick={() => setPaso('clienta')} className="self-start text-lg font-semibold text-emara underline">
           Cambiar clienta
         </button>

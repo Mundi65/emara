@@ -29,7 +29,7 @@ type FilaCheque = { numero: string; banco: string; monto: number | null; fecha_c
 
 export default function CerrarLote() {
   return (
-    <Pantalla titulo="🧾 Cerrar lote">
+    <Pantalla titulo="🧾 Cerrar lote" volver={`/lotes/${useParams().id}`}>
       <SoloDuena>
         <Formulario />
       </SoloDuena>
