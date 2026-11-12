@@ -231,10 +231,12 @@ export function FotoJoya({
           </div>
         )}
         {marca && url && (
-          <span className="absolute right-1.5 bottom-1.5 flex items-center gap-1 rounded-full bg-white/80 py-0.5 pr-2 pl-1 backdrop-blur-sm">
-            <img src="/marca/ave-cafe.png" alt="" className="h-4 w-auto" />
-            <span className="font-titulo text-sm leading-none font-semibold text-emara">Emara</span>
-          </span>
+          <img
+            src="/marca/ave-beige.png"
+            alt=""
+            aria-hidden
+            className="pointer-events-none absolute right-2 bottom-2 w-[28%] drop-shadow-[0_0_2px_rgba(47,38,31,0.7)]"
+          />
         )}
       </div>
       {codigo && <span className="max-w-full truncate text-sm text-emara/60">{codigo}</span>}
