@@ -10,7 +10,10 @@
     "iconos": "node scripts/generar-iconos.mjs"
   },
   "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.2.8",
+    "@fontsource/montserrat": "^5.2.8",
     "@supabase/supabase-js": "^2.119.0",
+    "lucide-react": "^0.544.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.5",

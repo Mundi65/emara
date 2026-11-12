@@ -154,7 +154,7 @@ export default function FichaLote() {
                       type="button"
                       onClick={() => marcar(j.id)}
                       className={`mt-1 min-h-12 w-full rounded-xl text-base font-semibold ${
-                        puestos[j.id] ? 'bg-green-600 text-white' : 'border-2 border-emara/30 text-emara'
+                        puestos[j.id] ? 'bg-green-600 text-white' : 'border-2 border-linea text-emara'
                       }`}
                     >
                       {puestos[j.id] ? '✓ Ticket puesto' : 'Poner ticket'}

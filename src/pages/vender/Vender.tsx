@@ -189,7 +189,7 @@ export default function Vender() {
               setClientaId(c.clienta_id)
               setPaso('precio')
             }}
-            className="flex min-h-16 items-center justify-between rounded-2xl bg-white p-4 text-left shadow-sm active:bg-dorado/30"
+            className="flex min-h-16 items-center justify-between rounded-2xl bg-white p-4 text-left shadow-sm active:bg-arena"
           >
             <span className="text-xl font-semibold">{c.nombre}</span>
             {Number(c.saldo) > 0 && (
@@ -264,7 +264,7 @@ export default function Vender() {
       <p className="text-lg text-emara/80">Toca las joyas que se lleva.</p>
       <input
         type="search"
-        placeholder="🔍 Buscar por código"
+        placeholder="Buscar por código"
         value={buscar}
         onChange={(e) => setBuscar(e.target.value)}
         className={estiloCampo}

@@ -1,3 +1,4 @@
+import { AlarmClock, CalendarDays, Lock, Tag, TrendingUp, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import { Pantalla } from '../../components/Pantalla'
@@ -54,12 +55,14 @@ export default function Informes() {
       <h2 className="mt-4 text-xl font-bold">Informes</h2>
       <EnlaceFila
         to="/atrasadas"
+        icono={<AlarmClock size={22} strokeWidth={1.6} />}
         derecha={atrasadas ? <span className="font-bold text-red-700">{atrasadas}</span> : undefined}
       >
-        <span className="text-lg font-semibold">⏰ Clientas atrasadas</span>
+        <span className="text-lg font-semibold">Clientas atrasadas</span>
       </EnlaceFila>
       <EnlaceFila
         to="/cheques"
+        icono={<CalendarDays size={22} strokeWidth={1.6} />}
         derecha={
           proximo ? (
             <span className="text-base text-emara/70">
@@ -70,18 +73,18 @@ export default function Informes() {
           ) : undefined
         }
       >
-        <span className="text-lg font-semibold">🗓️ Cheques 🔒</span>
+        <span className="text-lg font-semibold">Cheques <Lock size={16} strokeWidth={2} className="ml-1 inline align-[-1px] text-emara/50" aria-label="pide PIN" /></span>
       </EnlaceFila>
-      <EnlaceFila to="/balance">
-        <span className="text-lg font-semibold">📈 Mi balance y utilidad 🔒</span>
+      <EnlaceFila to="/balance" icono={<TrendingUp size={22} strokeWidth={1.6} />}>
+        <span className="text-lg font-semibold">Mi balance y utilidad <Lock size={16} strokeWidth={2} className="ml-1 inline align-[-1px] text-emara/50" aria-label="pide PIN" /></span>
       </EnlaceFila>
-      <EnlaceFila to="/proveedoras">
-        <span className="text-lg font-semibold">🏷️ Proveedoras e inventario 🔒</span>
+      <EnlaceFila to="/proveedoras" icono={<Tag size={22} strokeWidth={1.6} />}>
+        <span className="text-lg font-semibold">Proveedoras e inventario <Lock size={16} strokeWidth={2} className="ml-1 inline align-[-1px] text-emara/50" aria-label="pide PIN" /></span>
       </EnlaceFila>
-      <EnlaceFila to="/clientas">
-        <span className="text-lg font-semibold">👩 Todas las clientas</span>
+      <EnlaceFila to="/clientas" icono={<Users size={22} strokeWidth={1.6} />}>
+        <span className="text-lg font-semibold">Todas las clientas</span>
       </EnlaceFila>
-      <p className="text-base text-emara/70">🔒 = pide tu PIN (Modo dueña).</p>
+      <p className="text-base text-emara/70"><Lock size={16} strokeWidth={2} className="ml-1 inline align-[-1px] text-emara/50" aria-label="pide PIN" /> = pide tu PIN (Modo dueña).</p>
     </Pantalla>
   )
 }

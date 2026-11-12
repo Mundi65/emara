@@ -4,8 +4,8 @@ export const APP = {
   lema: 'Tu asistente para vender joyas',
   moneda: 'USD',
   colores: {
-    principal: '#7a3e5c',
-    dorado: '#f6d9a8',
-    fondo: '#fdf8f3',
+    principal: '#745e4d',
+    dorado: '#ddc1a7',
+    fondo: '#faf6f1',
   },
 } as const

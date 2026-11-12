@@ -104,10 +104,10 @@ export default function FichaClienta() {
         onClick={enviarEstado}
         className="min-h-14 rounded-2xl border-2 border-green-600 bg-white text-lg font-semibold text-green-700"
       >
-        📲 Enviar estado de cuenta por WhatsApp
+        Enviar estado de cuenta por WhatsApp
       </button>
       <Link to={`/clientas/${c.id}/editar`} className="min-h-14 py-3 text-center text-lg font-semibold text-emara underline">
-        ✏️ Editar datos, día de pago y "enviar saldo"
+        Editar datos, día de pago y "enviar saldo"
       </Link>
     </Pantalla>
   )

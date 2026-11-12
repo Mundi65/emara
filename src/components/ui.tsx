@@ -2,9 +2,10 @@ import { useEffect, useState, type InputHTMLAttributes, type ReactNode } from 'r
 import { Link } from 'react-router-dom'
 import { dineroParaCampo, formatoDinero, leerDinero } from '../lib/formato'
 import { urlFoto } from '../lib/fotos'
+import { Gem } from 'lucide-react'
 
 export const estiloCampo =
-  'w-full min-h-14 rounded-2xl border-2 border-emara/30 bg-white px-4 text-xl outline-none focus:border-emara'
+  'w-full min-h-14 rounded-2xl border-2 border-linea bg-white px-4 text-xl outline-none transition focus:border-emara focus:ring-4 focus:ring-dorado/30'
 
 export function Campo({
   etiqueta,
@@ -93,7 +94,7 @@ export function Opciones<T extends string | number>({
             type="button"
             onClick={() => onCambio(o.valor)}
             className={`min-h-14 rounded-2xl border-2 px-4 text-lg font-semibold ${
-              valor === o.valor ? 'border-emara bg-emara text-white' : 'border-emara/30 bg-white text-emara'
+              valor === o.valor ? 'border-emara bg-emara text-white' : 'border-linea bg-white text-emara'
             }`}
           >
             {o.texto}
@@ -169,12 +170,27 @@ export function Vacio({ children }: { children: ReactNode }) {
   return <p className="rounded-2xl bg-white p-6 text-center text-lg text-emara/70 shadow-sm">{children}</p>
 }
 
-export function EnlaceFila({ to, children, derecha }: { to: string; children: ReactNode; derecha?: ReactNode }) {
+export function EnlaceFila({
+  to,
+  children,
+  derecha,
+  icono,
+}: {
+  to: string
+  children: ReactNode
+  derecha?: ReactNode
+  icono?: ReactNode
+}) {
   return (
     <Link
       to={to}
-      className="flex min-h-16 items-center justify-between gap-3 rounded-2xl bg-white p-4 shadow-sm active:bg-dorado/30"
+      className="flex min-h-16 items-center justify-between gap-3 rounded-2xl bg-white p-4 shadow-sm active:bg-arena"
     >
+      {icono && (
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-arena text-emara" aria-hidden>
+          {icono}
+        </span>
+      )}
       <span className="min-w-0 flex-1">{children}</span>
       {derecha && <span className="shrink-0 text-right">{derecha}</span>}
       <span aria-hidden className="text-2xl text-emara/40">›</span>
@@ -207,7 +223,9 @@ export function FotoJoya({
         {url ? (
           <img src={url} alt={codigo ?? 'Joya'} className="h-full w-full object-cover" loading="lazy" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-3xl" aria-hidden>💍</div>
+          <div className="flex h-full w-full items-center justify-center text-dorado" aria-hidden>
+            <Gem size={32} strokeWidth={1.3} />
+          </div>
         )}
       </div>
       {codigo && <span className="max-w-full truncate text-sm text-emara/60">{codigo}</span>}

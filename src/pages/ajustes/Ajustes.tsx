@@ -1,3 +1,4 @@
+import { KeyRound, ShieldCheck, Tag } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import { Pantalla } from '../../components/Pantalla'
@@ -58,10 +59,14 @@ export default function Ajustes() {
       {aviso && <Aviso tipo={aviso.tipo}>{aviso.texto}</Aviso>}
 
       <h2 className="text-xl font-bold">Seguridad</h2>
-      <EnlaceFila to="/ajustes/pin" derecha={tienePin ? '' : <span className="text-amber-700">Falta</span>}>
-        🔢 {tienePin ? 'Cambiar mi PIN' : 'Crear mi PIN'}
+      <EnlaceFila
+        to="/ajustes/pin"
+        icono={<KeyRound size={22} strokeWidth={1.6} />}
+        derecha={tienePin ? '' : <span className="text-amber-700">Falta</span>}
+      >
+        {tienePin ? 'Cambiar mi PIN' : 'Crear mi PIN'}
       </EnlaceFila>
-      <EnlaceFila to="/ajustes/seguridad">🛡️ Me robaron el celular / cambiar contraseña</EnlaceFila>
+      <EnlaceFila to="/ajustes/seguridad" icono={<ShieldCheck size={22} strokeWidth={1.6} />}>Me robaron el celular / cambiar contraseña</EnlaceFila>
       {tienePin && modoDuena && (
         <BotonGrande variante="secundario" icono="🔒" onClick={salirModoDuena}>
           Cerrar Modo dueña ahora
@@ -69,7 +74,7 @@ export default function Ajustes() {
       )}
 
       <h2 className="mt-4 text-xl font-bold">Mi negocio</h2>
-      <EnlaceFila to="/proveedoras">🏷️ Proveedoras y comisiones</EnlaceFila>
+      <EnlaceFila to="/proveedoras" icono={<Tag size={22} strokeWidth={1.6} />}>Proveedoras y comisiones</EnlaceFila>
       {!ajustes ? (
         <Cargando />
       ) : (
@@ -99,7 +104,7 @@ export default function Ajustes() {
               rows={2}
               value={ajustes.texto_comprobante}
               onChange={(e) => setAjustes({ ...ajustes, texto_comprobante: e.target.value })}
-              className="w-full rounded-2xl border-2 border-emara/30 bg-white p-4 text-xl outline-none focus:border-emara"
+              className="w-full rounded-2xl border-2 border-linea bg-white p-4 text-xl outline-none focus:border-emara"
             />
           </label>
           <BotonGrande onClick={guardar} disabled={guardando} className="justify-center">

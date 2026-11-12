@@ -96,12 +96,12 @@ export default function FichaJoya() {
       </Link>
 
       <label className="flex min-h-14 items-center justify-center rounded-2xl border-2 border-emara bg-white text-lg font-semibold text-emara">
-        📷 {foto ? 'Foto nueva lista (toca Guardar)' : 'Cambiar foto con ticket'}
+        {foto ? 'Foto nueva lista (toca Guardar)' : 'Cambiar foto con ticket'}
         <input type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => setFoto(e.target.files?.[0] ?? null)} />
       </label>
 
       <Tarjeta className="flex flex-col gap-3">
-        <p className="text-lg font-bold">✨ Foto para clientas (sin ticket)</p>
+        <p className="text-lg font-bold">Foto para clientas (sin ticket)</p>
         {j.foto_catalogo_path ? (
           <div className="mx-auto w-40">
             <FotoJoya ruta={j.foto_catalogo_path} />
@@ -141,7 +141,7 @@ export default function FichaJoya() {
 
       {modoDuena ? (
         <Tarjeta className="flex flex-col gap-3">
-          <p className="text-lg font-bold">🔒 Solo tú ves esto</p>
+          <p className="text-lg font-bold">Solo tú ves esto</p>
           <CampoDinero etiqueta="Precio del ticket (costo)" valor={j.precio_costo} onCambio={(n) => cambiar({ precio_costo: n })} />
           {j.tipo_costo === 'peso' && (
             <Campo
@@ -153,7 +153,7 @@ export default function FichaJoya() {
           )}
         </Tarjeta>
       ) : (
-        <p className="text-base text-emara/70">🔒 El precio del ticket se ve y se corrige en Modo dueña.</p>
+        <p className="text-base text-emara/70">El precio del ticket se ve y se corrige en Modo dueña.</p>
       )}
 
       <Interruptor etiqueta="Es un juego (varias piezas)" valor={j.es_juego} onCambio={(v) => cambiar({ es_juego: v })} />

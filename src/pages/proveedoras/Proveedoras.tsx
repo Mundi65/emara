@@ -58,8 +58,7 @@ export default function Proveedoras() {
               derecha={!p.es_propio && <span className="text-xl font-bold text-emara">{Number(p.comision_pct)} %</span>}
             >
               <span className="block text-xl font-semibold">
-                {p.es_propio ? '💎 ' : ''}
-                {p.nombre}
+                                {p.nombre}
               </span>
               <span className="block text-base text-emara/70">
                 {p.joyas_disponibles} joyas en mano · {p.lotes_abiertos} {p.lotes_abiertos === 1 ? 'lote abierto' : 'lotes abiertos'}
