@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { Delete } from 'lucide-react'
+import { sinEmoji } from './Icono'
 
 /** Teclado grande para escribir un PIN de 4 números. */
 export function TecladoPin({
@@ -34,7 +36,7 @@ export function TecladoPin({
   return (
     <div className="mx-auto flex w-full max-w-xs flex-col items-center gap-6">
       <div className="text-center">
-        <p className="text-2xl font-bold text-emara">{titulo}</p>
+        <p className="font-titulo text-4xl font-semibold text-emara">{sinEmoji(titulo)}</p>
         {subtitulo && <p className="mt-1 text-lg text-emara/70">{subtitulo}</p>}
       </div>
       <div className="flex gap-4" aria-label={`${pin.length} de 4 números`}>
@@ -54,7 +56,7 @@ export function TecladoPin({
             key={d}
             type="button"
             onClick={() => tecla(d)}
-            className="h-16 rounded-2xl bg-white text-3xl font-semibold text-emara shadow-sm active:bg-dorado/50"
+            className="h-16 rounded-2xl border border-linea bg-white text-3xl font-medium text-emara shadow-sm active:bg-arena"
           >
             {d}
           </button>
@@ -63,17 +65,17 @@ export function TecladoPin({
         <button
           type="button"
           onClick={() => tecla('0')}
-          className="h-16 rounded-2xl bg-white text-3xl font-semibold text-emara shadow-sm active:bg-dorado/50"
+          className="h-16 rounded-2xl border border-linea bg-white text-3xl font-medium text-emara shadow-sm active:bg-arena"
         >
           0
         </button>
         <button
           type="button"
           onClick={() => setPin((p) => p.slice(0, -1))}
-          className="h-16 rounded-2xl text-xl font-semibold text-emara active:bg-dorado/50"
+          className="h-16 rounded-2xl text-xl font-semibold text-emara active:bg-arena"
           aria-label="Borrar"
         >
-          ⌫
+          <Delete size={28} strokeWidth={1.6} className="mx-auto" aria-hidden />
         </button>
       </div>
     </div>

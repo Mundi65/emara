@@ -5,6 +5,7 @@ import { formatoDinero, formatoFecha, hoyISO } from '../lib/formato'
 import { EnlaceGrande } from '../components/BotonGrande'
 import { useSesion } from '../hooks/useSesion'
 import { APP } from '../config/app'
+import { AlarmClock, CalendarDays, Images, Settings, Users } from 'lucide-react'
 
 type Resumen = { total: number; clientas: number }
 type Alertas = { atrasadas: number; cheque: { fecha_cobro: string; monto: number } | null }
@@ -43,57 +44,85 @@ export default function Inicio() {
   }, [])
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-lg flex-col px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-6">
-      <header className="mb-6">
-        <p className="text-xl text-emara/80">Hola{nombre ? `, ${nombre}` : ''} 👋</p>
-        <h1 className="text-3xl font-bold text-emara">{APP.nombre}</h1>
-        <div className="mt-4 rounded-2xl bg-white p-4 shadow-sm">
+    <div className="mx-auto flex min-h-dvh max-w-lg flex-col px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-6">
+      {/* Cabecera café con el colibrí del logo */}
+      <header className="relative mb-5 overflow-hidden rounded-3xl bg-emara px-5 pt-5 pb-6 text-white shadow-suave">
+        <img
+          src="/marca/ave-beige.png"
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute -top-2 -right-6 w-40 opacity-25"
+        />
+        <p className="text-lg text-dorado">Hola{nombre ? `, ${nombre}` : ''}</p>
+        <h1 className="text-5xl font-semibold tracking-wide">{APP.nombre}</h1>
+        <p className="mt-1 text-sm tracking-[0.3em] text-white/70 uppercase">Fashion jewelry</p>
+
+        <div className="mt-5 rounded-2xl bg-white/10 px-4 py-3">
           {resumen === null ? (
-            <p className="text-xl text-emara/60">Cargando…</p>
+            <p className="text-lg text-white/70">Cargando…</p>
           ) : resumen.clientas === 0 ? (
-            <p className="text-xl">Nadie te debe por ahora ✨</p>
+            <p className="text-lg">Nadie te debe por ahora</p>
           ) : (
-            <p className="text-xl">
-              Te deben <strong className="text-2xl text-emara">{formatoDinero(resumen.total)}</strong>
-              <span className="text-emara/70">
-                {' '}
-                · {resumen.clientas} {resumen.clientas === 1 ? 'clienta' : 'clientas'}
-              </span>
-            </p>
+            <>
+              <p className="text-base text-white/80">Te deben</p>
+              <p className="font-titulo text-4xl font-semibold text-dorado tabular-nums">{formatoDinero(resumen.total)}</p>
+              <p className="text-base text-white/80">
+                {resumen.clientas} {resumen.clientas === 1 ? 'clienta' : 'clientas'}
+              </p>
+            </>
           )}
         </div>
-        {alertas.atrasadas > 0 && (
-          <Link to="/atrasadas" className="mt-3 flex min-h-14 items-center rounded-2xl bg-red-50 px-4 text-lg font-semibold text-red-800">
-            ⏰ {alertas.atrasadas} {alertas.atrasadas === 1 ? 'clienta atrasada' : 'clientas atrasadas'} ›
-          </Link>
-        )}
-        {alertas.cheque && (
-          <Link to="/cheques" className="mt-3 flex min-h-14 items-center rounded-2xl bg-amber-50 px-4 text-lg font-semibold text-amber-900">
-            🗓️ Cheque de {formatoDinero(alertas.cheque.monto)}{' '}
-            {alertas.cheque.fecha_cobro < hoyISO() ? 'con fecha pasada' : `el ${formatoFecha(alertas.cheque.fecha_cobro)}`} ›
-          </Link>
-        )}
       </header>
 
-      <nav className="flex flex-1 flex-col gap-4">
-        <EnlaceGrande to="/recibir" icono="📦">Recibir joyas</EnlaceGrande>
+      {(alertas.atrasadas > 0 || alertas.cheque) && (
+        <div className="mb-5 flex flex-col gap-3">
+          {alertas.atrasadas > 0 && (
+            <Link
+              to="/atrasadas"
+              className="flex min-h-14 items-center gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 text-lg font-semibold text-red-800"
+            >
+              <AlarmClock size={24} strokeWidth={1.7} aria-hidden />
+              <span className="flex-1">
+                {alertas.atrasadas} {alertas.atrasadas === 1 ? 'clienta atrasada' : 'clientas atrasadas'}
+              </span>
+              <span aria-hidden>›</span>
+            </Link>
+          )}
+          {alertas.cheque && (
+            <Link
+              to="/cheques"
+              className="flex min-h-14 items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 text-lg font-semibold text-amber-900"
+            >
+              <CalendarDays size={24} strokeWidth={1.7} aria-hidden />
+              <span className="flex-1">
+                Cheque de {formatoDinero(alertas.cheque.monto)}{' '}
+                {alertas.cheque.fecha_cobro < hoyISO() ? 'con fecha pasada' : `el ${formatoFecha(alertas.cheque.fecha_cobro)}`}
+              </span>
+              <span aria-hidden>›</span>
+            </Link>
+          )}
+        </div>
+      )}
+
+      <nav className="flex flex-1 flex-col gap-3">
         <EnlaceGrande to="/vender" icono="💍">Vender</EnlaceGrande>
-        <EnlaceGrande to="/cobrar" icono="💵">Cobrar abono</EnlaceGrande>
-        <EnlaceGrande to="/informes" icono="📋">Devolver / Informes</EnlaceGrande>
+        <EnlaceGrande to="/cobrar" icono="💵" variante="secundario">Cobrar abono</EnlaceGrande>
+        <EnlaceGrande to="/recibir" icono="📦" variante="secundario">Recibir joyas</EnlaceGrande>
+        <EnlaceGrande to="/informes" icono="📋" variante="secundario">Devolver / Informes</EnlaceGrande>
       </nav>
 
-      <footer className="mt-8 grid grid-cols-3 gap-2">
+      <footer className="mt-6 grid grid-cols-3 gap-3">
         {[
-          { to: '/clientas', texto: 'Clientas', icono: '👩' },
-          { to: '/catalogo', texto: 'Catálogo', icono: '🖼️' },
-          { to: '/ajustes', texto: 'Ajustes', icono: '⚙️' },
+          { to: '/clientas', texto: 'Clientas', Icono: Users },
+          { to: '/catalogo', texto: 'Catálogo', Icono: Images },
+          { to: '/ajustes', texto: 'Ajustes', Icono: Settings },
         ].map((e) => (
           <Link
             key={e.to}
             to={e.to}
-            className="flex min-h-16 flex-col items-center justify-center rounded-2xl bg-white text-lg font-semibold text-emara shadow-sm active:bg-dorado/40"
+            className="flex min-h-20 flex-col items-center justify-center gap-1 rounded-2xl border border-linea bg-white text-base font-semibold text-emara shadow-suave active:bg-arena"
           >
-            <span aria-hidden className="text-2xl">{e.icono}</span>
+            <e.Icono size={26} strokeWidth={1.6} aria-hidden />
             {e.texto}
           </Link>
         ))}

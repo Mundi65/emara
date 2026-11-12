@@ -1,10 +1,19 @@
 @import "tailwindcss";
 
+/* Paleta tomada del logotipo de Emara */
 @theme {
-  --color-emara: #7a3e5c;
-  --color-emara-oscuro: #5e2d46;
-  --color-dorado: #f6d9a8;
-  --color-crema: #fdf8f3;
+  --color-emara: #745e4d;        /* café del logo: color principal */
+  --color-emara-oscuro: #5a4839; /* café más oscuro: al tocar */
+  --color-dorado: #ddc1a7;       /* beige del colibrí: acento */
+  --color-arena: #efe4d8;        /* beige suave: fondos de íconos */
+  --color-crema: #faf6f1;        /* fondo general */
+  --color-tinta: #2f261f;        /* texto */
+  --color-linea: #e7ddd2;        /* bordes finos */
+
+  --font-sans: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-titulo: "Cormorant Garamond", Georgia, serif;
+
+  --shadow-suave: 0 1px 2px rgb(47 38 31 / 0.04), 0 4px 16px rgb(47 38 31 / 0.06);
 }
 
 html {
@@ -16,6 +25,18 @@ html {
 body {
   margin: 0;
   background: var(--color-crema);
-  color: #2b1d24;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Títulos con la letra elegante del logo */
+h1 {
+  font-family: var(--font-titulo);
+  letter-spacing: 0.01em;
+}
+
+/* Las tarjetas blancas de toda la app: sombra suave y borde fino */
+.shadow-sm {
+  box-shadow: var(--shadow-suave);
 }

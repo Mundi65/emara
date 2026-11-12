@@ -1,3 +1,4 @@
+import { AlarmClock } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import { Pantalla } from '../../components/Pantalla'
@@ -31,7 +32,7 @@ export function ListaClientas({
     <>
       <input
         type="search"
-        placeholder="🔍 Buscar por nombre"
+        placeholder="Buscar por nombre"
         value={buscar}
         onChange={(e) => setBuscar(e.target.value)}
         className={estiloCampo}
@@ -39,7 +40,7 @@ export function ListaClientas({
       {!filas ? (
         <Cargando />
       ) : lista.length === 0 ? (
-        <Vacio>{soloConSaldo ? 'Nadie te debe por ahora ✨' : 'Todavía no hay clientas.'}</Vacio>
+        <Vacio>{soloConSaldo ? 'Nadie te debe por ahora' : 'Todavía no hay clientas.'}</Vacio>
       ) : (
         lista.map((c) => (
           <EnlaceFila
@@ -70,7 +71,7 @@ export default function Clientas() {
       <EnlaceGrande to="/clientas/nueva" icono="➕">
         Nueva clienta
       </EnlaceGrande>
-      <EnlaceFila to="/atrasadas">⏰ Clientas atrasadas en sus pagos</EnlaceFila>
+      <EnlaceFila to="/atrasadas" icono={<AlarmClock size={22} strokeWidth={1.6} />}>Clientas atrasadas en sus pagos</EnlaceFila>
       <ListaClientas destino={(id) => `/clientas/${id}`} />
     </Pantalla>
   )

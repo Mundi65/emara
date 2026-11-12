@@ -50,8 +50,8 @@ export default function Catalogo() {
       <div className="grid grid-cols-2 gap-2 rounded-2xl bg-white p-1 shadow-sm">
         {(
           [
-            { v: 'existencias', t: '📦 Mis existencias' },
-            { v: 'clientas', t: '✨ Para clientas' },
+            { v: 'existencias', t: 'Mis existencias' },
+            { v: 'clientas', t: 'Para clientas' },
           ] as const
         ).map((o) => (
           <button
@@ -92,14 +92,14 @@ export default function Catalogo() {
             vista === 'clientas' ? (
               <div key={j.id} className="rounded-2xl bg-white p-2 shadow-sm">
                 <FotoJoya ruta={j.foto_catalogo_path} />
-                <p className="mt-1 text-center text-xl font-bold text-emara">
+                <p className="mt-1 text-center font-titulo text-2xl font-semibold text-emara">
                   {j.precio_venta_sugerido ? <Dinero valor={j.precio_venta_sugerido} /> : 'Consultar'}
                 </p>
               </div>
             ) : (
               <Link key={j.id} to={`/joyas/${j.id}`} className="rounded-2xl bg-white p-2 shadow-sm">
                 <FotoJoya ruta={j.foto_catalogo_path ?? j.foto_joya_path} codigo={j.codigo} />
-                <p className="text-center text-xl font-bold text-emara">
+                <p className="text-center font-titulo text-2xl font-semibold text-emara">
                   {j.precio_venta_sugerido ? <Dinero valor={j.precio_venta_sugerido} /> : '—'}
                 </p>
                 <p className="truncate text-center text-sm text-emara/60">
@@ -127,7 +127,7 @@ export default function Catalogo() {
       {vista === 'existencias' && (
         <p className="text-base text-emara/70">
           Toca una joya para ver su ficha y tomarle la foto para clientas. Antes de enseñarle el catálogo a una clienta,
-          cambia a "✨ Para clientas".
+          cambia a "Para clientas".
         </p>
       )}
     </Pantalla>

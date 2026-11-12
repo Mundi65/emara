@@ -31,7 +31,7 @@ import Catalogo from './pages/catalogo/Catalogo'
 function Aviso({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
     <div className="mx-auto flex min-h-dvh max-w-lg flex-col justify-center gap-4 px-4">
-      <h1 className="text-3xl font-bold text-emara">{titulo}</h1>
+      <h1 className="text-4xl font-semibold text-emara">{titulo}</h1>
       {children}
     </div>
   )
@@ -42,7 +42,8 @@ function Bloqueo() {
   const { verificar } = usePin()
   return (
     <div className="mx-auto flex min-h-dvh max-w-lg flex-col justify-center gap-6 px-4">
-      <TecladoPin titulo="🔒 Emara" subtitulo="Escribe tu PIN para entrar" onCompleto={verificar} />
+      <img src="/marca/ave-cafe.png" alt="" className="mx-auto h-20 w-auto" />
+      <TecladoPin titulo="Emara" subtitulo="Escribe tu PIN para entrar" onCompleto={verificar} />
       <button
         type="button"
         onClick={() => {
@@ -112,7 +113,7 @@ export default function App() {
   if (cargando) {
     return (
       <div className="flex min-h-dvh items-center justify-center">
-        <p className="text-2xl text-emara">Cargando…</p>
+        <img src="/marca/ave-cafe.png" alt="Cargando…" className="h-24 w-auto animate-pulse" />
       </div>
     )
   }

@@ -4,7 +4,7 @@ import { BotonGrande } from '../components/BotonGrande'
 import { APP } from '../config/app'
 
 const campo =
-  'w-full min-h-14 rounded-2xl border-2 border-emara/30 bg-white px-4 text-xl outline-none focus:border-emara'
+  'w-full min-h-14 rounded-2xl border-2 border-linea bg-white px-4 text-xl outline-none transition focus:border-emara focus:ring-4 focus:ring-dorado/30'
 
 export default function Login() {
   const [correo, setCorreo] = useState('')
@@ -31,10 +31,12 @@ export default function Login() {
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-lg flex-col justify-center px-4 py-8">
-      <div className="mb-10 text-center">
-        <img src="/pwa-192.png" alt="" className="mx-auto mb-4 h-24 w-24 rounded-3xl shadow-md" />
-        <h1 className="text-4xl font-bold text-emara">{APP.nombre}</h1>
-        <p className="mt-2 text-xl text-emara/80">{APP.lema}</p>
+      <div className="mb-8 text-center">
+        <img src="/marca/ave-cafe.png" alt="" className="mx-auto mb-3 h-28 w-auto" />
+        <h1 className="text-6xl font-semibold text-emara">{APP.nombre}</h1>
+        <p className="mt-1 text-sm tracking-[0.3em] text-emara/70 uppercase">Fashion jewelry</p>
+        <div className="mx-auto mt-4 h-px w-12 bg-dorado" aria-hidden />
+        <p className="mt-4 text-lg text-emara/80">{APP.lema}</p>
       </div>
 
       <form onSubmit={entrar} className="flex flex-col gap-5">
@@ -65,7 +67,7 @@ export default function Login() {
             <button
               type="button"
               onClick={() => setVerClave((v) => !v)}
-              className="min-h-14 shrink-0 rounded-2xl border-2 border-emara/30 bg-white px-4 text-lg font-semibold text-emara"
+              className="min-h-14 shrink-0 rounded-2xl border-2 border-linea bg-white px-4 text-lg font-semibold text-emara"
             >
               {verClave ? 'Ocultar' : 'Ver'}
             </button>

@@ -55,7 +55,7 @@ export default function Atrasadas() {
       {!filas ? (
         <Cargando />
       ) : filas.length === 0 ? (
-        <Vacio>¡Nadie está atrasada! 🎉</Vacio>
+        <Vacio>¡Nadie está atrasada!</Vacio>
       ) : (
         filas.map((a) => (
           <Tarjeta key={a.clienta_id} className="flex flex-col gap-2">
@@ -81,13 +81,13 @@ export default function Atrasadas() {
                 onClick={() => recordar(a)}
                 className="min-h-14 rounded-2xl bg-green-600 text-lg font-semibold text-white"
               >
-                📲 Recordar
+                Recordar
               </button>
               <Link
                 to={`/cobrar/${a.clienta_id}`}
                 className="flex min-h-14 items-center justify-center rounded-2xl bg-emara text-lg font-semibold text-white"
               >
-                💵 Abono
+                Abono
               </Link>
             </div>
           </Tarjeta>
