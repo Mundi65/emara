@@ -51,7 +51,7 @@ export default function Inicio() {
           src="/marca/ave-beige.png"
           alt=""
           aria-hidden
-          className="pointer-events-none absolute -top-2 -right-6 w-40 opacity-25"
+          className="pointer-events-none absolute top-3 right-3 w-32 opacity-25"
         />
         <p className="text-lg text-dorado">Hola{nombre ? `, ${nombre}` : ''}</p>
         <h1 className="text-5xl font-semibold tracking-wide">{APP.nombre}</h1>
