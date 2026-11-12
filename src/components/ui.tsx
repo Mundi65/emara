@@ -203,10 +203,13 @@ export function FotoJoya({
   ruta,
   codigo,
   tamano = 'md',
+  marca,
 }: {
   ruta: string | null | undefined
   codigo?: string | null
   tamano?: 'sm' | 'md' | 'lg'
+  /** pone el logo de Emara abajo a la derecha (catálogo para clientas) */
+  marca?: boolean
 }) {
   const [url, setUrl] = useState<string | null>(null)
   useEffect(() => {
@@ -219,13 +222,19 @@ export function FotoJoya({
   const lado = tamano === 'sm' ? 'h-16 w-16' : tamano === 'lg' ? 'aspect-square w-full' : 'aspect-square w-full'
   return (
     <div className="flex flex-col items-center gap-1">
-      <div className={`${lado} overflow-hidden rounded-xl bg-crema`}>
+      <div className={`${lado} relative overflow-hidden rounded-xl bg-crema`}>
         {url ? (
           <img src={url} alt={codigo ?? 'Joya'} className="h-full w-full object-cover" loading="lazy" />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-dorado" aria-hidden>
             <Gem size={32} strokeWidth={1.3} />
           </div>
+        )}
+        {marca && url && (
+          <span className="absolute right-1.5 bottom-1.5 flex items-center gap-1 rounded-full bg-white/80 py-0.5 pr-2 pl-1 backdrop-blur-sm">
+            <img src="/marca/ave-cafe.png" alt="" className="h-4 w-auto" />
+            <span className="font-titulo text-sm leading-none font-semibold text-emara">Emara</span>
+          </span>
         )}
       </div>
       {codigo && <span className="max-w-full truncate text-sm text-emara/60">{codigo}</span>}

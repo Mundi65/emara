@@ -91,7 +91,7 @@ export default function Catalogo() {
           {lista.map((j) =>
             vista === 'clientas' ? (
               <div key={j.id} className="rounded-2xl bg-white p-2 shadow-sm">
-                <FotoJoya ruta={j.foto_catalogo_path} />
+                <FotoJoya ruta={j.foto_catalogo_path} marca />
                 <p className="mt-1 text-center font-titulo text-2xl font-semibold text-emara">
                   {j.precio_venta_sugerido ? <Dinero valor={j.precio_venta_sugerido} /> : 'Consultar'}
                 </p>
